@@ -1,5 +1,6 @@
-controller.up.onEvent(ControllerButtonEvent.Pressed, function on_up_pressed() {
-    animation.runImageAnimation(jugador, [img`
+def on_up_pressed():
+    animation.run_image_animation(jugador,
+        [img("""
                 . . . . . . f f f f . . . . . .
                 . . . . f f e e e e f f . . . .
                 . . . f e e e f f e e e f . . .
@@ -16,7 +17,8 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function on_up_pressed() {
                 . . 4 4 f 4 4 4 4 4 4 f 4 4 . .
                 . . . . . f f f f f f . . . . .
                 . . . . . f f . . f f . . . . .
-                `, img`
+                """),
+            img("""
                 . . . . . . . . . . . . . . . .
                 . . . . . . f f f f . . . . . .
                 . . . . f f e e e e f f . . . .
@@ -33,7 +35,8 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function on_up_pressed() {
                 . . . 4 f 2 2 2 2 2 e d d 4 . .
                 . . . e f f f f f f e e 4 . . .
                 . . . . f f f . . . . . . . . .
-                `, img`
+                """),
+            img("""
                 . . . . . . f f f f . . . . . .
                 . . . . f f e e e e f f . . . .
                 . . . f e e e f f e e e f . . .
@@ -50,7 +53,8 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function on_up_pressed() {
                 . . 4 4 f 4 4 4 4 4 4 f 4 4 . .
                 . . . . . f f f f f f . . . . .
                 . . . . . f f . . f f . . . . .
-                `, img`
+                """),
+            img("""
                 . . . . . . . . . . . . . . . .
                 . . . . . . f f f f . . . . . .
                 . . . . f f e e e e f f . . . .
@@ -67,10 +71,14 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function on_up_pressed() {
                 . . 4 d d e 2 2 2 2 2 f 4 . . .
                 . . . 4 e e f f f f f f e . . .
                 . . . . . . . . . f f f . . . .
-                `], 300, true)
-})
-controller.left.onEvent(ControllerButtonEvent.Pressed, function on_left_pressed() {
-    animation.runImageAnimation(jugador, [img`
+                """)],
+        300,
+        True)
+controller.up.on_event(ControllerButtonEvent.PRESSED, on_up_pressed)
+
+def on_left_pressed():
+    animation.run_image_animation(jugador,
+        [img("""
                 . . . . f f f f f f . . . . . .
                 . . . f 2 f e e e e f f . . . .
                 . . f 2 2 2 f e e e e f f . . .
@@ -87,7 +95,8 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function on_left_pressed(
                 . . . f 5 5 4 f e e f . . . . .
                 . . . . f f f f f f . . . . . .
                 . . . . . . f f f . . . . . . .
-                `, img`
+                """),
+            img("""
                 . . . . . . . . . . . . . . . .
                 . . . . f f f f f f . . . . . .
                 . . . f 2 f e e e e f f . . . .
@@ -104,7 +113,8 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function on_left_pressed(
                 . . f f 5 5 f e e f f f . . . .
                 . . f f f f f f f f f f . . . .
                 . . . f f f . . . f f . . . . .
-                `, img`
+                """),
+            img("""
                 . . . . f f f f f f . . . . . .
                 . . . f 2 f e e e e f f . . . .
                 . . f 2 2 2 f e e e e f f . . .
@@ -121,7 +131,8 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function on_left_pressed(
                 . . . f 5 5 4 f e e f . . . . .
                 . . . . f f f f f f . . . . . .
                 . . . . . . f f f . . . . . . .
-                `, img`
+                """),
+            img("""
                 . . . . . . . . . . . . . . . .
                 . . . . f f f f f f . . . . . .
                 . . . f 2 f e e e e f f . . . .
@@ -138,10 +149,14 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function on_left_pressed(
                 . . f f 5 5 4 4 f e e f . . . .
                 . . f f f f f f f f f f . . . .
                 . . . f f f . . . f f . . . . .
-                `], 300, true)
-})
-controller.right.onEvent(ControllerButtonEvent.Pressed, function on_right_pressed() {
-    animation.runImageAnimation(jugador, [img`
+                """)],
+        300,
+        True)
+controller.left.on_event(ControllerButtonEvent.PRESSED, on_left_pressed)
+
+def on_right_pressed():
+    animation.run_image_animation(jugador,
+        [img("""
                 . . . . . . f f f f f f . . . .
                 . . . . f f e e e e f 2 f . . .
                 . . . f f e e e e f 2 2 2 f . .
@@ -158,7 +173,8 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function on_right_presse
                 . . . . . f e e f 4 5 5 f . . .
                 . . . . . . f f f f f f . . . .
                 . . . . . . . f f f . . . . . .
-                `, img`
+                """),
+            img("""
                 . . . . . . . . . . . . . . . .
                 . . . . . . f f f f f f . . . .
                 . . . . f f e e e e f 2 f . . .
@@ -175,7 +191,8 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function on_right_presse
                 . . . . f f f e e f 5 5 f f . .
                 . . . . f f f f f f f f f f . .
                 . . . . . f f . . . f f f . . .
-                `, img`
+                """),
+            img("""
                 . . . . . . f f f f f f . . . .
                 . . . . f f e e e e f 2 f . . .
                 . . . f f e e e e f 2 2 2 f . .
@@ -192,7 +209,8 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function on_right_presse
                 . . . . . f e e f 4 5 5 f . . .
                 . . . . . . f f f f f f . . . .
                 . . . . . . . f f f . . . . . .
-                `, img`
+                """),
+            img("""
                 . . . . . . . . . . . . . . . .
                 . . . . . . f f f f f f . . . .
                 . . . . f f e e e e f 2 f . . .
@@ -209,10 +227,14 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function on_right_presse
                 . . . . f e e f 4 4 5 5 f f . .
                 . . . . f f f f f f f f f f . .
                 . . . . . f f . . . f f f . . .
-                `], 300, true)
-})
-controller.down.onEvent(ControllerButtonEvent.Pressed, function on_down_pressed() {
-    animation.runImageAnimation(jugador, [img`
+                """)],
+        300,
+        True)
+controller.right.on_event(ControllerButtonEvent.PRESSED, on_right_pressed)
+
+def on_down_pressed():
+    animation.run_image_animation(jugador,
+        [img("""
                 . . . . . . f f f f . . . . . .
                 . . . . f f f 2 2 f f f . . . .
                 . . . f f f 2 2 2 2 f f f . . .
@@ -229,7 +251,8 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function on_down_pressed(
                 . . 4 4 f 4 4 5 5 4 4 f 4 4 . .
                 . . . . . f f f f f f . . . . .
                 . . . . . f f . . f f . . . . .
-                `, img`
+                """),
+            img("""
                 . . . . . . . . . . . . . . . .
                 . . . . . . f f f f . . . . . .
                 . . . . f f f 2 2 f f f . . . .
@@ -246,7 +269,8 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function on_down_pressed(
                 . . . . f 4 4 5 5 f e e . . . .
                 . . . . f f f f f f f . . . . .
                 . . . . f f f . . . . . . . . .
-                `, img`
+                """),
+            img("""
                 . . . . . . f f f f . . . . . .
                 . . . . f f f 2 2 f f f . . . .
                 . . . f f f 2 2 2 2 f f f . . .
@@ -263,7 +287,8 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function on_down_pressed(
                 . . 4 4 f 4 4 5 5 4 4 f 4 4 . .
                 . . . . . f f f f f f . . . . .
                 . . . . . f f . . f f . . . . .
-                `, img`
+                """),
+            img("""
                 . . . . . . . . . . . . . . . .
                 . . . . . . f f f f . . . . . .
                 . . . . f f f 2 2 f f f . . . .
@@ -280,10 +305,13 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function on_down_pressed(
                 . . . . e e f 5 5 4 4 f . . . .
                 . . . . . f f f f f f f . . . .
                 . . . . . . . . . f f f . . . .
-                `], 300, true)
-})
-let jugador : Sprite = null
-jugador = sprites.create(img`
+                """)],
+        300,
+        True)
+controller.down.on_event(ControllerButtonEvent.PRESSED, on_down_pressed)
+
+jugador: Sprite = None
+jugador = sprites.create(img("""
         . . . . . . f f f f . . . . . .
         . . . . f f f 2 2 f f f . . . .
         . . . f f f 2 2 2 2 f f f . . .
@@ -300,8 +328,9 @@ jugador = sprites.create(img`
         . . 4 4 f 4 4 5 5 4 4 f 4 4 . .
         . . . . . f f f f f f . . . . .
         . . . . . f f . . f f . . . . .
-        `, SpriteKind.Player)
-scene.setBackgroundImage(img`
+        """),
+    SpriteKind.player)
+scene.set_background_image(img("""
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -422,5 +451,5 @@ scene.setBackgroundImage(img`
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    `)
-controller.moveSprite(jugador)
+    """))
+controller.move_sprite(jugador)
