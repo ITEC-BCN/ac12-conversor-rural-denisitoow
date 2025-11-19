@@ -3,7 +3,6 @@
     "description": "",
     "dependencies": {
        "device": "*",
-       "arcade-miniMenu": "github:jwunderl/arcade-miniMenu#v0.2.2"
    },
     "files": [
         "main.blocks",
