@@ -1,458 +1,260 @@
 def on_up_pressed():
-    animation.run_image_animation(jugador,
-        [img("""
-                . . . . . . f f f f . . . . . .
-                . . . . f f e e e e f f . . . .
-                . . . f e e e f f e e e f . . .
-                . . f f f f f 2 2 f f f f f . .
-                . . f f e 2 e 2 2 e 2 e f f . .
-                . . f e 2 f 2 f f 2 f 2 e f . .
-                . . f f f 2 2 e e 2 2 f f f . .
-                . f f e f 2 f e e f 2 f e f f .
-                . f e e f f e e e e f e e e f .
-                . . f e e e e e e e e e e 3 . .
-                . . . f e e e e e e e e f . . .
-                . . e 4 f f f f f f f f 4 e . .
-                . . 4 d f 2 2 2 2 2 2 f d 4 . .
-                . . 4 4 f 4 4 4 4 4 4 f 4 4 . .
-                . . . . . f f f f f f . . . . .
-                . . . . . f f . . f f . . . . .
+    if not (menu_abierto):
+        animation.run_image_animation(jugador,
+            assets.animation("""
+                animado_arriba
                 """),
-            img("""
-                . . . . . . . . . . . . . . . .
-                . . . . . . f f f f . . . . . .
-                . . . . f f e e e e f f . . . .
-                . . . f e e e f f e e e f . . .
-                . . . f f f f 2 2 f f f f . . .
-                . . f f e 2 e 2 2 e 2 e f f . .
-                . . f e 2 f 2 f f f 2 f e f . .
-                . . f f f 2 f e e 2 2 f f f . .
-                . . f e 2 f f e e 2 f e e f . .
-                . f f e f f e e e f e e e f f .
-                . f f e e e e e e e e e e f f .
-                . . . f e e e e e e e e f . . .
-                . . . e f f f f f f f f 4 e . .
-                . . . 4 f 2 2 2 2 2 e d d 4 . .
-                . . . e f f f f f f e e 4 . . .
-                . . . . f f f . . . . . . . . .
-                """),
-            img("""
-                . . . . . . f f f f . . . . . .
-                . . . . f f e e e e f f . . . .
-                . . . f e e e f f e e e f . . .
-                . . f f f f f 2 2 f f f f f . .
-                . . f f e 2 e 2 2 e 2 e f f . .
-                . . f e 2 f 2 f f 2 f 2 e f . .
-                . . f f f 2 2 e e 2 2 f f f . .
-                . f f e f 2 f e e f 2 f e f f .
-                . f e e f f e e e e f e e e f .
-                . . f e e e e e e e e e e f . .
-                . . . f e e e e e e e e f . . .
-                . . e 4 f f f f f f f f 4 e . .
-                . . 4 d f 2 2 2 2 2 2 f d 4 . .
-                . . 4 4 f 4 4 4 4 4 4 f 4 4 . .
-                . . . . . f f f f f f . . . . .
-                . . . . . f f . . f f . . . . .
-                """),
-            img("""
-                . . . . . . . . . . . . . . . .
-                . . . . . . f f f f . . . . . .
-                . . . . f f e e e e f f . . . .
-                . . . f e e e f f e e e f . . .
-                . . . f f f f 2 2 f f f f . . .
-                . . f f e 2 e 2 2 e 2 e f f . .
-                . . f e f 2 f f f 2 f 2 e f . .
-                . . f f f 2 2 e e f 2 f f f . .
-                . . f e e f 2 e e f f 2 e f . .
-                . f f e e e f e e e f f e f f .
-                . f f e e e e e e e e e e f f .
-                . . . f e e e e e e e e f . . .
-                . . e 4 f f f f f f f f e . . .
-                . . 4 d d e 2 2 2 2 2 f 4 . . .
-                . . . 4 e e f f f f f f e . . .
-                . . . . . . . . . f f f . . . .
-                """)],
-        300,
-        True)
+            300,
+            True)
 controller.up.on_event(ControllerButtonEvent.PRESSED, on_up_pressed)
 
+def convertir_a_lena_patatas(kg_patatas: number):
+    return Math.round(kg_patatas / 1.5 * PATATA_LENA * 100) / 100
+def crear_menu():
+    global menu_abierto, my_menu2
+    menu_abierto = True
+    my_menu2 = miniMenu.create_menu(miniMenu.create_menu_item("Gallinas", assets.image("""
+            pollo
+            """)),
+        miniMenu.create_menu_item("Patatas", assets.image("""
+            papas
+            """)),
+        miniMenu.create_menu_item("Cabras", assets.image("""
+            cabra
+            """)),
+        miniMenu.create_menu_item("Huevos", assets.image("""
+            huevo
+            """)),
+        miniMenu.create_menu_item("Caballos", assets.image("""
+            caballo
+            """)),
+        miniMenu.create_menu_item("Tabla de precios", assets.image("""
+            precios
+            """)),
+        miniMenu.create_menu_item("Salir", assets.image("""
+            salir
+            """)))
+    my_menu2.set_dimensions(120, 100)
+    my_menu2.set_position(80, 60)
+    my_menu2.set_title("Conversor Rural")
+    
+    def on_button_pressed(selection, selectedIndex):
+        global menu_option
+        my_menu2.close()
+        menu_option = selectedIndex
+    my_menu2.on_button_pressed(controller.A, on_button_pressed)
+    
+def empujar_atras():
+    jugador.vx = 0
+    jugador.vy = -150
+    pause(200)
+    jugador.vy = 0
+def validar_animal_entero(cantidad: number, nombre_animal: str):
+    if cantidad <= 0:
+        game.splash("Error!", "La cantidad debe ser mayor que 0")
+        return False
+    if cantidad != Math.floor(cantidad):
+        game.splash("Error!", "No puedes pedir medio " + nombre_animal + "!")
+        return False
+    return True
+
 def on_left_pressed():
-    animation.run_image_animation(jugador,
-        [img("""
-                . . . . f f f f f f . . . . . .
-                . . . f 2 f e e e e f f . . . .
-                . . f 2 2 2 f e e e e f f . . .
-                . . f e e e e f f e e e f . . .
-                . f e 2 2 2 2 e e f f f f . . .
-                . f 2 e f f f f 2 2 2 e f . . .
-                . f f f e e e f f f f f f f . .
-                . f e e 4 4 f b e 4 4 e f f . .
-                . . f e d d f 1 4 d 4 e e f . .
-                . . . f d d d d 4 e e e f . . .
-                . . . f e 4 4 4 e e f f . . . .
-                . . . f 2 2 2 e d d 4 . . . . .
-                . . . f 2 2 2 e d d e . . . . .
-                . . . f 5 5 4 f e e f . . . . .
-                . . . . f f f f f f . . . . . .
-                . . . . . . f f f . . . . . . .
+    if not (menu_abierto):
+        animation.run_image_animation(jugador,
+            assets.animation("""
+                animado_izq
                 """),
-            img("""
-                . . . . . . . . . . . . . . . .
-                . . . . f f f f f f . . . . . .
-                . . . f 2 f e e e e f f . . . .
-                . . f 2 2 2 f e e e e f f . . .
-                . . f e e e e f f e e e f . . .
-                . f e 2 2 2 2 e e f f f f . . .
-                . f 2 e f f f f 2 2 2 e f . . .
-                . f f f e e e f f f f f f f . .
-                . f e e 4 4 f b e 4 4 e f f . .
-                . . f e d d f 1 4 d 4 e e f . .
-                . . . f d d d e e e e e f . . .
-                . . . f e 4 e d d 4 f . . . . .
-                . . . f 2 2 e d d e f . . . . .
-                . . f f 5 5 f e e f f f . . . .
-                . . f f f f f f f f f f . . . .
-                . . . f f f . . . f f . . . . .
-                """),
-            img("""
-                . . . . f f f f f f . . . . . .
-                . . . f 2 f e e e e f f . . . .
-                . . f 2 2 2 f e e e e f f . . .
-                . . f e e e e f f e e e f . . .
-                . f e 2 2 2 2 e e f f f f . . .
-                . f 2 e f f f f 2 2 2 e f . . .
-                . f f f e e e f f f f f f f . .
-                . f e e 4 4 f b e 4 4 e f f . .
-                . . f e d d f 1 4 d 4 e e f . .
-                . . . f d d d d 4 e e e f . . .
-                . . . f e 4 4 4 e e f f . . . .
-                . . . f 2 2 2 e d d 4 . . . . .
-                . . . f 2 2 2 e d d e . . . . .
-                . . . f 5 5 4 f e e f . . . . .
-                . . . . f f f f f f . . . . . .
-                . . . . . . f f f . . . . . . .
-                """),
-            img("""
-                . . . . . . . . . . . . . . . .
-                . . . . f f f f f f . . . . . .
-                . . . f 2 f e e e e f f . . . .
-                . . f 2 2 2 f e e e e f f . . .
-                . . f e e e e f f e e e f . . .
-                . f e 2 2 2 2 e e f f f f . . .
-                . f 2 e f f f f 2 2 2 e f . . .
-                . f f f e e e f f f f f f f . .
-                . f e e 4 4 f b e 4 4 e f f . .
-                . . f e d d f 1 4 d 4 e e f . .
-                . . . f d d d d 4 e e e f . . .
-                . . . f e 4 4 4 e d d 4 . . . .
-                . . . f 2 2 2 2 e d d e . . . .
-                . . f f 5 5 4 4 f e e f . . . .
-                . . f f f f f f f f f f . . . .
-                . . . f f f . . . f f . . . . .
-                """)],
-        300,
-        True)
+            300,
+            True)
 controller.left.on_event(ControllerButtonEvent.PRESSED, on_left_pressed)
 
+def convertir_a_lena_gallinas(cantidad_gallinas: number):
+    return Math.round(cantidad_gallinas * GALLINA_LENA * 100) / 100
+def procesar_gallinas():
+    global cantidad6, menu_abierto, my_menu2
+    cantidad6 = game.ask_for_number("Cuantas gallinas quieres?", 2)
+    if validar_animal_entero(cantidad6, "gallina"):
+        mostrar_resultado(cantidad6, "gallinas", convertir_a_lena_gallinas(cantidad6))
+        menu_abierto = False
+        my_menu2 = None
+        pause(500)
+        empujar_atras()
+def mostrar_resultado(cantidad2: number, producto: str, lena_necesaria: number):
+    game.splash("" + str(cantidad2) + " " + producto + " =",
+        "" + str(lena_necesaria) + " kg de lena")
+def validar_cantidad_positiva(cantidad3: number):
+    if cantidad3 <= 0:
+        game.splash("Error!", "La cantidad debe ser mayor que 0")
+        return False
+    return True
+def convertir_a_lena_caballos(cantidad_caballos: number):
+    return Math.round(cantidad_caballos * CABALLO_LENA * 100) / 100
+def convertir_a_lena_cabras(cantidad_cabras: number):
+    return Math.round(cantidad_cabras * CABRA_LENA * 100) / 100
+
 def on_right_pressed():
-    animation.run_image_animation(jugador,
-        [img("""
-                . . . . . . f f f f f f . . . .
-                . . . . f f e e e e f 2 f . . .
-                . . . f f e e e e f 2 2 2 f . .
-                . . . f e e e f f e e e e f . .
-                . . . f f f f e e 2 2 2 2 e f .
-                . . . f e 2 2 2 f f f f e 2 f .
-                . . f f f f f f f e e e f f f .
-                . . f f e 4 4 e b f 4 4 e e f .
-                . . f e e 4 d 4 1 f d d e f . .
-                . . . f e e e 4 d d d d f . . .
-                . . . . f f e e 4 4 4 e f . . .
-                . . . . . 4 d d e 2 2 2 f . . .
-                . . . . . e d d e 2 2 2 f . . .
-                . . . . . f e e f 4 5 5 f . . .
-                . . . . . . f f f f f f . . . .
-                . . . . . . . f f f . . . . . .
+    if not (menu_abierto):
+        animation.run_image_animation(jugador,
+            assets.animation("""
+                animado_der
                 """),
-            img("""
-                . . . . . . . . . . . . . . . .
-                . . . . . . f f f f f f . . . .
-                . . . . f f e e e e f 2 f . . .
-                . . . f f e e e e f 2 2 2 f . .
-                . . . f e e e f f e e e e f . .
-                . . . f f f f e e 2 2 2 2 e f .
-                . . . f e 2 2 2 f f f f e 2 f .
-                . . f f f f f f f e e e f f f .
-                . . f f e 4 4 e b f 4 4 e e f .
-                . . f e e 4 d 4 1 f d d e f . .
-                . . . f e e e e e d d d f . . .
-                . . . . . f 4 d d e 4 e f . . .
-                . . . . . f e d d e 2 2 f . . .
-                . . . . f f f e e f 5 5 f f . .
-                . . . . f f f f f f f f f f . .
-                . . . . . f f . . . f f f . . .
-                """),
-            img("""
-                . . . . . . f f f f f f . . . .
-                . . . . f f e e e e f 2 f . . .
-                . . . f f e e e e f 2 2 2 f . .
-                . . . f e e e f f e e e e f . .
-                . . . f f f f e e 2 2 2 2 e f .
-                . . . f e 2 2 2 f f f f e 2 f .
-                . . f f f f f f f e e e f f f .
-                . . f f e 4 4 e b f 4 4 e e f .
-                . . f e e 4 d 4 1 f d d e f . .
-                . . . f e e e 4 d d d d f . . .
-                . . . . f f e e 4 4 4 e f . . .
-                . . . . . 4 d d e 2 2 2 f . . .
-                . . . . . e d d e 2 2 2 f . . .
-                . . . . . f e e f 4 5 5 f . . .
-                . . . . . . f f f f f f . . . .
-                . . . . . . . f f f . . . . . .
-                """),
-            img("""
-                . . . . . . . . . . . . . . . .
-                . . . . . . f f f f f f . . . .
-                . . . . f f e e e e f 2 f . . .
-                . . . f f e e e e f 2 2 2 f . .
-                . . . f e e e f f e e e e f . .
-                . . . f f f f e e 2 2 2 2 e f .
-                . . . f e 2 2 2 f f f f e 2 f .
-                . . f f f f f f f e e e f f f .
-                . . f f e 4 4 e b f 4 4 e e f .
-                . . f e e 4 d 4 1 f d d e f . .
-                . . . f e e e 4 d d d d f . . .
-                . . . . 4 d d e 4 4 4 e f . . .
-                . . . . e d d e 2 2 2 2 f . . .
-                . . . . f e e f 4 4 5 5 f f . .
-                . . . . f f f f f f f f f f . .
-                . . . . . f f . . . f f f . . .
-                """)],
-        300,
-        True)
+            300,
+            True)
 controller.right.on_event(ControllerButtonEvent.PRESSED, on_right_pressed)
 
+def procesar_salida():
+    global menu_abierto, my_menu2, menu_option
+    menu_abierto = False
+    my_menu2 = None
+    game.splash("Hasta pronto!", "Gracias por venir al mercado")
+    menu_option = -1
+    pause(500)
+    empujar_atras()
+def procesar_cabras():
+    global cantidad32, menu_abierto, my_menu2
+    cantidad32 = game.ask_for_number("Cuantas cabras quieres?", 2)
+    if validar_animal_entero(cantidad32, "cabra"):
+        mostrar_resultado(cantidad32, "cabras", convertir_a_lena_cabras(cantidad32))
+        menu_abierto = False
+        my_menu2 = None
+        pause(500)
+        empujar_atras()
+
 def on_down_pressed():
-    animation.run_image_animation(jugador,
-        [img("""
-                . . . . . . f f f f . . . . . .
-                . . . . f f f 2 2 f f f . . . .
-                . . . f f f 2 2 2 2 f f f . . .
-                . . f f f e e e e e e f f f . .
-                . . f f e 2 2 2 2 2 2 e e f . .
-                . . f e 2 f f f f f f 2 e f . .
-                . . f f f f e e e e f f f f . .
-                . f f e f b f 4 4 f b f e f f .
-                . f e e 4 1 f d d f 1 4 e e f .
-                . . f e e d d d d d d e e f . .
-                . . . f e e 4 4 4 4 e e f . . .
-                . . e 4 f 2 2 2 2 2 2 f 4 e . .
-                . . 4 d f 2 2 2 2 2 2 f d 4 . .
-                . . 4 4 f 4 4 5 5 4 4 f 4 4 . .
-                . . . . . f f f f f f . . . . .
-                . . . . . f f . . f f . . . . .
+    if not (menu_abierto):
+        animation.run_image_animation(jugador,
+            assets.animation("""
+                animado_abajo
                 """),
-            img("""
-                . . . . . . . . . . . . . . . .
-                . . . . . . f f f f . . . . . .
-                . . . . f f f 2 2 f f f . . . .
-                . . . f f f 2 2 2 2 f f f . . .
-                . . f f f e e e e e e f f f . .
-                . . f f e 2 2 2 2 2 2 e e f . .
-                . f f e 2 f f f f f f 2 e f f .
-                . f f f f f e e e e f f f f f .
-                . . f e f b f 4 4 f b f e f . .
-                . . f e 4 1 f d d f 1 4 e f . .
-                . . . f e 4 d d d d 4 e f e . .
-                . . f e f 2 2 2 2 e d d 4 e . .
-                . . e 4 f 2 2 2 2 e d d e . . .
-                . . . . f 4 4 5 5 f e e . . . .
-                . . . . f f f f f f f . . . . .
-                . . . . f f f . . . . . . . . .
-                """),
-            img("""
-                . . . . . . f f f f . . . . . .
-                . . . . f f f 2 2 f f f . . . .
-                . . . f f f 2 2 2 2 f f f . . .
-                . . f f f e e e e e e f f f . .
-                . . f f e 2 2 2 2 2 2 e e f . .
-                . . f e 2 f f f f f f 2 e f . .
-                . . f f f f e e e e f f f f . .
-                . f f e f b f 4 4 f b f e f f .
-                . f e e 4 1 f d d f 1 4 e e f .
-                . . f e e d d d d d d e e f . .
-                . . . f e e 4 4 4 4 e e f . . .
-                . . e 4 f 2 2 2 2 2 2 f 4 e . .
-                . . 4 d f 2 2 2 2 2 2 f d 4 . .
-                . . 4 4 f 4 4 5 5 4 4 f 4 4 . .
-                . . . . . f f f f f f . . . . .
-                . . . . . f f . . f f . . . . .
-                """),
-            img("""
-                . . . . . . . . . . . . . . . .
-                . . . . . . f f f f . . . . . .
-                . . . . f f f 2 2 f f f . . . .
-                . . . f f f 2 2 2 2 f f f . . .
-                . . f f f e e e e e e f f f . .
-                . . f e e 2 2 2 2 2 2 e f f . .
-                . f f e 2 f f f f f f 2 e f f .
-                . f f f f f e e e e f f f f f .
-                . . f e f b f 4 4 f b f e f . .
-                . . f e 4 1 f d d f 1 4 e f . .
-                . . e f e 4 d d d d 4 e f . . .
-                . . e 4 d d e 2 2 2 2 f e f . .
-                . . . e d d e 2 2 2 2 f 4 e . .
-                . . . . e e f 5 5 4 4 f . . . .
-                . . . . . f f f f f f f . . . .
-                . . . . . . . . . f f f . . . .
-                """)],
-        300,
-        True)
+            300,
+            True)
 controller.down.on_event(ControllerButtonEvent.PRESSED, on_down_pressed)
 
+def procesar_patatas():
+    global cantidad22, menu_abierto, my_menu2
+    cantidad22 = game.ask_for_number("Cuantos kg de patatas?", 2)
+    if validar_cantidad_positiva(cantidad22):
+        mostrar_resultado(cantidad22,
+            "kg de patatas",
+            convertir_a_lena_patatas(cantidad22))
+        menu_abierto = False
+        my_menu2 = None
+        pause(500)
+        empujar_atras()
+def convertir_a_lena_huevos(cantidad_huevos: number):
+    return Math.round(cantidad_huevos / 12 * HUEVOS_LENA * 100) / 100
+def procesar_caballos():
+    global cantidad5, menu_abierto, my_menu2
+    cantidad5 = game.ask_for_number("Cuantos caballos quieres?", 2)
+    if validar_animal_entero(cantidad5, "caballo"):
+        mostrar_resultado(cantidad5, "caballos", convertir_a_lena_caballos(cantidad5))
+        menu_abierto = False
+        my_menu2 = None
+        pause(500)
+        empujar_atras()
+def mostrar_tabla_precios():
+    global menu_abierto, my_menu2
+    texto = "TABLA DE PRECIOS\n\n"
+    texto = "" + texto + """
+        1 Gallina = 6 kg lena
+        """
+    texto = "" + texto + """
+        1.5 kg Patatas = 2 kg lena
+        """
+    texto = "" + texto + "1 Cabra = 5 kg lena\n"
+    texto = "" + texto + """
+        12 Huevos = 3 kg lena
+        """
+    texto = "" + texto + "1 Caballo = 12 kg lena"
+    game.show_long_text(texto, DialogLayout.CENTER)
+    menu_abierto = False
+    my_menu2 = None
+    pause(500)
+    empujar_atras()
+def procesar_huevos():
+    global cantidad4, menu_abierto, my_menu2
+    cantidad4 = game.ask_for_number("Cuantos huevos quieres?", 2)
+    if validar_cantidad_positiva(cantidad4):
+        mostrar_resultado(cantidad4, "huevos", convertir_a_lena_huevos(cantidad4))
+        menu_abierto = False
+        my_menu2 = None
+        pause(500)
+        empujar_atras()
+cantidad4 = 0
+cantidad5 = 0
+cantidad22 = 0
+cantidad32 = 0
+cantidad6 = 0
+menu_abierto = False
 jugador: Sprite = None
-jugador = sprites.create(img("""
-        . . . . . . f f f f . . . . . .
-        . . . . f f f 2 2 f f f . . . .
-        . . . f f f 2 2 2 2 f f f . . .
-        . . f f f e e e e e e f f f . .
-        . . f f e 2 2 2 2 2 2 e e f . .
-        . . f e 2 f f f f f f 2 e f . .
-        . . f f f f e e e e f f f f . .
-        . f f e f b f 4 4 f b f e f f .
-        . f e e 4 1 f d d f 1 4 e e f .
-        . . f e e d d d d d d e e f . .
-        . . . f e e 4 4 4 4 e e f . . .
-        . . e 4 f 2 2 2 2 2 2 f 4 e . .
-        . . 4 d f 2 2 2 2 2 2 f d 4 . .
-        . . 4 4 f 4 4 5 5 4 4 f 4 4 . .
-        . . . . . f f f f f f . . . . .
-        . . . . . f f . . f f . . . . .
-        """),
-    SpriteKind.player)
-npc = sprites.create(assets.image("""
-    myImage3
+CABALLO_LENA = 0
+HUEVOS_LENA = 0
+CABRA_LENA = 0
+PATATA_LENA = 0
+GALLINA_LENA = 0
+my_menu2: miniMenu.MenuSprite = None
+menu_option = 0
+menu_option = -1
+velocidad_x = 100
+velocidad_y = 100
+GALLINA_LENA = 6
+PATATA_LENA = 2
+CABRA_LENA = 5
+HUEVOS_LENA = 3
+CABALLO_LENA = 12
+jugador = sprites.create(assets.image("""
+    jugador
     """), SpriteKind.player)
-scene.set_background_image(img("""
-    9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
-    9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
-    9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
-    9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
-    9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
-    9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
-    9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
-    9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
-    9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
-    9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
-    9999999999999999999999999999999999999669999999999999999999999999999999999999966999999999999999999999999999999999999996699999999999999999999999999999999999999669
-    9999999999999999999999999999999999999669999999999999999999999999999999999999966999999999999999999999999999999999999996699999999999999999999999999999999999999669
-    9999999999999999999999999999999999999676999999999999999999999999999999999999967699999999999999999999999999999999999996769999999999999999999999999999999999999676
-    9999999999966999999999999999999999999676999999999996699999999999999999999999967699999999999669999999999999999999999996769999999999966999999999999999999999999676
-    9999999999967699999999999999999996699676999999999996769999999999999999999669967699999999999676999999999999999999966996769999999999967699999999999999999996699676
-    9996996669996769999966999999996696769676999699666999676999996699999999669676967699969966699967699999669999999966967696769996996669996769999966999999996696769676
-    9966999676996776999676966999967696769676996699967699677699967696699996769676967699669996769967769996769669999676967696769966999676996776999676966999967696769676
-    6676999967699676999676667699677696776677667699996769967699967666769967769677667766769999676996769996766676996776967766776676999967699676999676667699677696776677
-    6676669996769677696776667769676696676677667666999676967769677666776967669667667766766699967696776967766677696766966766776676669996769677696776667769676696676677
-    6776769996776667696766666766776666677677677676999677666769676666676677666667767767767699967766676967666667667766666776776776769996776667696766666766776666677677
-    6766776996667767667766666776766666677677676677699666776766776666677676666667767767667769966677676677666667767666666776776766776996667767667766666776766666677677
-    7766676966677667667667766676766776667677776667696667766766766776667676677666767777666769666776676676677666767667766676777766676966677667667667766676766776667677
-    7766677666776667777666776677767766667777776667766677666777766677667776776666777777666776667766677776667766777677666677777766677666776667777666776677767766667777
-    7666667666776767777666676677667666767777766666766677676777766667667766766676777776666676667767677776666766776676667677777666667666776767777666676677667666767777
-    7667667767766777776677677677677667766777766766776776677777667767767767766776677776676677677667777766776776776776677667777667667767766777776677677677677667766777
-    7667767767766777776776667677677667666777766776776776677777677666767767766766677776677677677667777767766676776776676667777667767767766777776776667677677667666777
-    7666767767666777676766667b776776b766677b7666767767666777676766667b776776b766677b7666767767666777676766667b776776b766677b7666767767666777676766667b776776b7666777
-    bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-    bbebbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbebbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbebbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbebbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-    bbbbbbbbbbebbbbbbbbbbbbbbbbbbebbbbbbbbbbbbbbbbbbbbebbbbbbbbbbbbbbbbbbebbbbbbbbbbbbbbbbbbbbebbbbbbbbbbbbbbbbbbebbbbbbbbbbbbbbbbbbbbebbbbbbbbbbbbbbbbbbebbbbbbbbbb
-    bbbeeeeebbbbbbbbbbbebbbeeeebbbbbbbbebbbbbbbeeeeebbbbbbbbbbbebbbeeeebbbbbbbbebbbbbbbeeeeebbbbbbbbbbbebbbeeeebbbbbbbbebbbbbbbeeeeebbbbbbbbbbbebbbeeeebbbbbbbbebbbb
-    beeeebeeeebbbbeebbbbbeeeeeeeebbeebbbbbebbeeeebeeeebbbbeebbbbbeeeeeeeebbeebbbbbebbeeeebeeeebbbbeebbbbbeeeeeeeebbeebbbbbebbeeeebeeeebbbbeebbbbbeeeeeeeebbeebbbbbeb
-    eeeeeeeeeeebbbeebbbbeebeeeeeeebeebbbbbbbeeeeeeeeeeebbbeebbbbeebeeeeeeebeebbbbbbbeeeeeeeeeeebbbeebbbbeebeeeeeeebeebbbbbbbeeeeeeeeeeebbbeebbbbeebeeeeeeebeebbbbbbb
-    ebbeeeeeeeeebbbbbbbeeeeeeeeeeeebbbbbbbbeebbeeeeeeeeebbbbbbbeeeeeeeeeeeebbbbbbbbeebbeeeeeeeeebbbbbbbeeeeeeeeeeeebbbbbbbbeebbeeeeeeeeebbbbbbbeeeeeeeeeeeebbbbbbbbe
-    ebbeeeeeeeeeeebbbeeeeeeeeeebbeeeebbbbeeeebbeeeeeeeeeeebbbeeeeeeeeeebbeeeebbbbeeeebbeeeeeeeeeeebbbeeeeeeeeeebbeeeebbbbeeeebbeeeeeeeeeeebbbeeeeeeeeeebbeeeebbbbeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeebbeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeebbeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeebbeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeebbeeeeeeeeeee
-    eeeeeeeeeebbeeeeeebbeeeeeeeeeeebeeeeeebeeeeeeeeeeebbeeeeeebbeeeeeeeeeeebeeeeeebeeeeeeeeeeebbeeeeeebbeeeeeeeeeeebeeeeeebeeeeeeeeeeebbeeeeeebbeeeeeeeeeeebeeeeeebe
-    eeeeeeeeeebbeeeeeebbeeeeeeeeeeeeeebbeeeeeeeeeeeeeebbeeeeeebbeeeeeeeeeeeeeebbeeeeeeeeeeeeeebbeeeeeebbeeeeeeeeeeeeeebbeeeeeeeeeeeeeebbeeeeeebbeeeeeeeeeeeeeebbeeee
-    eeeeeeeeeeeeeebeeeeeeeeeeeeeeeeeeebbeeeeeeeeeeeeeeeeeebeeeeeeeeeeeeeeeeeeebbeeeeeeeeeeeeeeeeeebeeeeeeeeeeeeeeeeeeebbeeeeeeeeeeeeeeeeeebeeeeeeeeeeeeeeeeeeebbeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeefdbfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffffeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeffbddfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeefdbfeeeeeeeeeeeeeeeeeeee
-    eeeeeeeefddddfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffbddfeeeeeeeeeeeeeeeeeeee
-    eeeeeeeefbdddffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeefddddffeeeeeeeeeeeeeeeeeee
-    eeeeeeeeffffbdffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeefbdddbffeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeffddfffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeefffffddffeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeffbdddbfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffddffeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeffddddfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffddffeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeefddbffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffdbffffeeeeeeeeeeee
-    eeeeeeeeeeeeeefbdfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffdddbfeeeeeeeeeeee
-    eeeeeeeeeeeeeeffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeefddddfeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeefddbffeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeefbdfeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffffeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeefffffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeffffffffffffddddddffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeefffddddddddddddffddddfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeffddddddddffffdddffdddfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeffdddfffddfffffdddddddffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeffdddfffffdffffddddddbdfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeffdddffffffddddddddbfdfdfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeefddddfffffdddddddfdffdfdfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeefdddddfffddddfffdffffffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeefdddddddddffffefffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeffdddbbbbffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeefffffbddddbbffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeefdffefdddddddddffffffffffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeefddfffddddddddddffddddfdfdfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeefffbbdfffdddddddddddddddbdbdfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeefffddfffffeffddddddddddddddddffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeefdbbdddfbfeeffffddddddffffffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeefddbbfffdfeeeeeffffffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeffffdddfefdffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeefbbfffffffddffeeeeffffeeeeefffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeffbbbfffdbdddffffefddbfffffbdddffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeefffffdfdbbdddddfefdddddddbbbbddfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeffbbbfdbddbbbffffefffffdddbddbfdfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeefbbfffdbbdddffffffeeeeffffbbbdfffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeefbdfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeefffffbddbbdddddddfeeeeeeeffdbdfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeefddbffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeefbbfdbbddbbfffffffeeeeeeffddfdfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffddddfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeefbffdbbbdddddddfeeeeeeeefddffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffbdddbfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeffffdddbbfffffffeeeeeeeeffffffffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffddfffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeffdffdddfeeeeeeeeeeeeeeeeeeffdffdfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffddffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeffddffffffeeeeeeeeeeeeeeeeeefddffdffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffddffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeefddbffffeeeeeeeeeefffffffeeffddffdbfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffffbdffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeffbbfddfeeeeeeeeeefddbbdffefddfffddfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeefbdddffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eefeeeeeeeeefdddbbffeeeeeeeeffddbdddfefdffffbdfeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeefeeeeeeeeefddddfeeeeeeeeeeeeeeeeeeeeeeeefeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeefefffbbddfeeeeeeeefddfffddfffffeffbffeeefeeeeeeeeeeeeeeeeeefeeeeeeeeeeeeeeeeeeeefeffbddfeeeeeeeeeeefeeeeeeeeeeeeeeeeeeeefeeeeeeeeeeeeeeeeeefeeeeeeeeee
-    eeefffffeeeeeefdddbffeeffffffddfeffddfffeefdbfffeeeeeeeeeeefeeeffffeeeeeeeefeeeeeeefffffeeeeeefdbfefeeeffffeeeeeeeefeeeeeeefffffeeeeefffffefeeeffffeeeeeeeefeeee
-    effffeffffeeeefdfbbdfffffffbddfffeffdffeeffddfffffeeeeffeeeeeffffffffeeffeeeeefeeffffeffffeeeeffffeeeffffffffeeffeeeeefeeffffeffffeeefbdbfeeeffffffffeeffeeeeefe
-    fffffffffffeeefffbdbffddddffbdfffeefffeefffbdffffffeeeffeeeeffefffffffeffeeeeeeefffffffffffeeeffeeeeffefffffffeffeeeeeeeffffffffffffffdddfeeffefffffffeffeeeeeee
-    feefffffffffeeeefddffbdffddfbbfeeeeeeeefffdbbfffffffeeeeeeeffffffffffffeeeeeeeeffeefffffffffeeeeeeeffffffffffffeeeeeeeeffeefffffffffbdddbffffffffffffffeeeeeeeef
-    feefffffffffffeefffffddfffdefffffeeeeffffbddffffffffffeeeffffffffffeeffffeeeeffffeefffffffffffeeeffffffffffeeffffeeeeffffeefffffffffddddddbffffffffeeffffeeeefff
-    fffffffffffffffffffffdddffdddfffffffffffdbbdfffffffffffffffffffbdbfeeffffffffffffffffffffffffffffffffffffffeefffffffffffffffffffffffbddbddddbfffffffefffffffffff
-    ffffffffffeeffffffeefffddddddffffffffdbddfffffffffeeffffffeefffdddfffffeffffffefffffffffffeeffffffeefffffffffffeffffffefffffffffffeffffffbddddbbddbffffeffffffef
-    ffffffffffeeffffffeefffddddddfffddbbddbdffffffffffeeffffffeefffbdddbffffffeeffffffffffffffeeffffffeeffffffffffffffeeffffffffffffffeefffffffbdddddddfffffffeeffff
-    ffffffffffffffefffffffffdddddffddfbddfffffffffffffffffeffffffbddddddffffffeeffffffffffffffffffefffffffffffffffffffeeffffffffffffffffffefffffffdddddfffffffeeffff
-    fffffffffffffffffffffffffdddfffffffffffffffffffffffffffffffbddddbddbffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdddbffffffffffffff
-    fffffffffffffffffffffffffffffffffffffffffffffffffffffbddbbddddbfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffbddfffffffffffffff
-    fffffffffffffffffffffffffffffffffffffffffffffffffffffdddddddbfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    fffffffffffffffffffffffffffffffffffffffffffffffffffffdddddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    ffffffffffffffffffffffffffffffffffffffffffffffffffffffbdddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    fffffffffffffffffffffffffffffffffffffffffffffffffffffffddbffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+npc = sprites.create(assets.image("""
+    npc
+    """), SpriteKind.enemy)
+npc.set_position(80, 90)
+jugador.set_stay_in_screen(True)
+controller.move_sprite(jugador, velocidad_x, velocidad_y)
+scene.set_background_image(assets.image("""
+    fondo
     """))
-controller.move_sprite(jugador)
+game.show_long_text("Bienvenido al CONVERSOR RURAL de Alcubilla de Avellaneda",
+    DialogLayout.BOTTOM)
+def gestionar_opcion_menu(opcion: any):
+    if opcion == 0:
+        procesar_gallinas()
+    elif opcion == 1:
+        procesar_patatas()
+    elif opcion == 2:
+        procesar_cabras()
+    elif opcion == 3:
+        procesar_huevos()
+    elif opcion == 4:
+        procesar_caballos()
+    elif opcion == 5:
+        mostrar_tabla_precios()
+    elif opcion == 6:
+        procesar_salida()
+
+def on_forever():
+    if controller.A.is_pressed() and jugador.overlaps_with(npc) and not (menu_abierto):
+        crear_menu()
+        pause(300)
+forever(on_forever)
+
+def on_forever2():
+    if jugador.overlaps_with(npc) and not (menu_abierto):
+        npc.say_text("Pulsa A para abrir el conversor", 500, False)
+    else:
+        npc.say_text("", 0, False)
+forever(on_forever2)
+
+def on_forever3():
+    if menu_abierto:
+        controller.move_sprite(jugador, 0, 0)
+    else:
+        controller.move_sprite(jugador, velocidad_x, velocidad_y)
+forever(on_forever3)
+
+def on_forever4():
+    global menu_option
+    if menu_option != -1:
+        gestionar_opcion_menu(menu_option)
+        menu_option = -1
+forever(on_forever4)
