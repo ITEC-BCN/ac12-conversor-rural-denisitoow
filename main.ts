@@ -1,3 +1,16 @@
+function actualizar_movimiento () {
+    if (menu_abierto) {
+        controller.moveSprite(jugador, 0, 0)
+    } else {
+        controller.moveSprite(jugador, velocidad_x, velocidad_y)
+    }
+}
+function actualizar_interaccion_npc () {
+    if (controller.A.isPressed() && jugador.overlapsWith(npc) && !(menu_abierto)) {
+        crear_menu()
+        pause(500)
+    }
+}
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (!(menu_abierto)) {
         animation.runImageAnimation(
@@ -61,13 +74,19 @@ function convertir_a_lena_gallinas (cantidad_gallinas: number) {
     return Math.round(cantidad_gallinas * GALLINA_LENA * 100) / 100
 }
 function procesar_gallinas () {
-    cantidad6 = game.askForNumber("Cuantas gallinas quieres?", 2)
+    menu_abierto = false
+    my_menu2 = null
+cantidad6 = game.askForNumber("Cuantas gallinas quieres?", 2)
     if (validar_animal_entero(cantidad6, "gallina")) {
         mostrar_resultado(cantidad6, "gallinas", convertir_a_lena_gallinas(cantidad6))
-        menu_abierto = false
-        my_menu2 = null
-pause(500)
-        empujar_atras()
+    }
+    pause(800)
+    empujar_atras()
+}
+function procesar_opciones_menu () {
+    if (menu_option != -1) {
+        gestionar_opcion_menu(menu_option)
+menu_option = -1
     }
 }
 function mostrar_resultado (cantidad2: number, producto: string, lena_necesaria: number) {
@@ -101,18 +120,18 @@ function procesar_salida () {
     my_menu2 = null
 game.splash("Hasta pronto!", "Gracias por venir al mercado")
     menu_option = -1
-    pause(500)
+    pause(800)
     empujar_atras()
 }
 function procesar_cabras () {
-    cantidad32 = game.askForNumber("Cuantas cabras quieres?", 2)
+    menu_abierto = false
+    my_menu2 = null
+cantidad32 = game.askForNumber("Cuantas cabras quieres?", 2)
     if (validar_animal_entero(cantidad32, "cabra")) {
         mostrar_resultado(cantidad32, "cabras", convertir_a_lena_cabras(cantidad32))
-        menu_abierto = false
-        my_menu2 = null
-pause(500)
-        empujar_atras()
     }
+    pause(800)
+    empujar_atras()
 }
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (!(menu_abierto)) {
@@ -125,30 +144,39 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function procesar_patatas () {
-    cantidad22 = game.askForNumber("Cuantos kg de patatas?", 2)
+    menu_abierto = false
+    my_menu2 = null
+cantidad22 = game.askForNumber("Cuantos kg de patatas?", 2)
     if (validar_cantidad_positiva(cantidad22)) {
         mostrar_resultado(cantidad22, "kg de patatas", convertir_a_lena_patatas(cantidad22))
-        menu_abierto = false
-        my_menu2 = null
-pause(500)
-        empujar_atras()
     }
+    pause(800)
+    empujar_atras()
 }
 function convertir_a_lena_huevos (cantidad_huevos: number) {
     return Math.round(cantidad_huevos / 12 * HUEVOS_LENA * 100) / 100
 }
-function procesar_caballos () {
-    cantidad5 = game.askForNumber("Cuantos caballos quieres?", 2)
-    if (validar_animal_entero(cantidad5, "caballo")) {
-        mostrar_resultado(cantidad5, "caballos", convertir_a_lena_caballos(cantidad5))
-        menu_abierto = false
-        my_menu2 = null
-pause(500)
-        empujar_atras()
+function actualizar_texto_npc () {
+    if (jugador.overlapsWith(npc) && !(menu_abierto)) {
+        npc.sayText("Pulsa A para abrir el conversor", 500, false)
+    } else {
+        npc.sayText("", 0, false)
     }
 }
+function procesar_caballos () {
+    menu_abierto = false
+    my_menu2 = null
+cantidad5 = game.askForNumber("Cuantos caballos quieres?", 2)
+    if (validar_animal_entero(cantidad5, "caballo")) {
+        mostrar_resultado(cantidad5, "caballos", convertir_a_lena_caballos(cantidad5))
+    }
+    pause(800)
+    empujar_atras()
+}
 function mostrar_tabla_precios () {
-    let texto = "TABLA DE PRECIOS\n\n"
+    menu_abierto = false
+    my_menu2 = null
+let texto = "TABLA DE PRECIOS\n\n"
 texto = "" + texto + `
         1 Gallina = 6 kg lena
         `
@@ -161,20 +189,18 @@ texto = "" + texto + `
         `
     texto = "" + texto + "1 Caballo = 12 kg lena"
     game.showLongText(texto, DialogLayout.Center)
-    menu_abierto = false
-    my_menu2 = null
-pause(500)
+    pause(800)
     empujar_atras()
 }
 function procesar_huevos () {
-    cantidad4 = game.askForNumber("Cuantos huevos quieres?", 2)
+    menu_abierto = false
+    my_menu2 = null
+cantidad4 = game.askForNumber("Cuantos huevos quieres?", 2)
     if (validar_cantidad_positiva(cantidad4)) {
         mostrar_resultado(cantidad4, "huevos", convertir_a_lena_huevos(cantidad4))
-        menu_abierto = false
-        my_menu2 = null
-pause(500)
-        empujar_atras()
     }
+    pause(800)
+    empujar_atras()
 }
 let cantidad4 = 0
 let cantidad5 = 0
@@ -182,24 +208,27 @@ let cantidad22 = 0
 let cantidad32 = 0
 let cantidad6 = 0
 let menu_abierto = false
+let npc: Sprite = null
 let jugador: Sprite = null
 let CABALLO_LENA = 0
 let HUEVOS_LENA = 0
 let CABRA_LENA = 0
 let PATATA_LENA = 0
 let GALLINA_LENA = 0
-let menu_option = 0
+let velocidad_y = 0
+let velocidad_x = 0
 let my_menu2 : miniMenu.MenuSprite = null
+let menu_option = 0
 menu_option = -1
-let velocidad_x = 100
-let velocidad_y = 100
+velocidad_x = 100
+velocidad_y = 100
 GALLINA_LENA = 6
 PATATA_LENA = 2
 CABRA_LENA = 5
 HUEVOS_LENA = 3
 CABALLO_LENA = 12
 jugador = sprites.create(assets.image`jugador`, SpriteKind.Player)
-let npc = sprites.create(assets.image`npc`, SpriteKind.Enemy)
+npc = sprites.create(assets.image`npc`, SpriteKind.Enemy)
 npc.setPosition(80, 90)
 jugador.setStayInScreen(true)
 controller.moveSprite(jugador, velocidad_x, velocidad_y)
@@ -223,29 +252,9 @@ function gestionar_opcion_menu(opcion: any) {
     }
     
 }
-forever(function () {
-    if (controller.A.isPressed() && jugador.overlapsWith(npc) && !(menu_abierto)) {
-        crear_menu()
-        pause(300)
-    }
-})
-forever(function () {
-    if (jugador.overlapsWith(npc) && !(menu_abierto)) {
-        npc.sayText("Pulsa A para abrir el conversor", 500, false)
-    } else {
-        npc.sayText("", 0, false)
-    }
-})
-forever(function () {
-    if (menu_abierto) {
-        controller.moveSprite(jugador, 0, 0)
-    } else {
-        controller.moveSprite(jugador, velocidad_x, velocidad_y)
-    }
-})
-forever(function () {
-    if (menu_option != -1) {
-        gestionar_opcion_menu(menu_option)
-menu_option = -1
-    }
+game.onUpdate(function () {
+    actualizar_interaccion_npc()
+    actualizar_texto_npc()
+    actualizar_movimiento()
+    procesar_opciones_menu()
 })
